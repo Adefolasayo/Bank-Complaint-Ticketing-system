@@ -1,0 +1,77 @@
+﻿@model List<Ticket>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Active"] = "Department Tickets";
+    var fullName = Context.Session.GetString("FullName");
+}
+
+@{
+    var hour = DateTime.Now.Hour;
+    var greeting = "";
+
+    if (hour < 12)
+    {
+        greeting = "Good morning";
+    }
+    else if (hour < 18)
+    {
+        greeting = "Good afternoon";
+    }
+    else
+    {
+        greeting = "Good evening";
+    }
+}
+
+<link rel="stylesheet" href="~/css/StaffDashboard.css" asp-append-version="true" />
+
+
+<nav class="navbar">
+
+    <div class="navbar-left">
+
+        <div class="welcome-section">
+            <span class="welcome-message">@greeting</span>
+            <span class="user-greeting"> Hi, @fullName. Welcome Back.</span>
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <button class="icon-button profile-pic-container">
+            <span class="material-symbols-outlined"> account_circle </span>
+        </button>
+    </div>
+</nav>
+
+<table border="1" width="100%">
+    <tr>
+        <th>Ticket Code</th>
+        <th>Customer</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Assigned To</th>
+        <th>Duration</th>
+    </tr>
+
+    @foreach (var ticket in Model)
+    {
+        <tr>
+            <td>@ticket.TicketCode</td>
+            <td>@ticket.Customer?.FullName</td>
+            <td>@ticket.Title</td>
+            <td>@ticket.Category</td>
+            <td>@ticket.Status</td>
+            <td>@ticket.CreatedAt</td>
+            <td>
+                @(ticket.AssignedToUser != null ? ticket.AssignedToUser.FullName : "Unassigned")
+
+            </td>
+            <td>@((ticket.ClosedAt - ticket.CreatedAt)?.TotalMinutes.ToString("0"))</td>
+
+
+        </tr>
+    }
+</table>

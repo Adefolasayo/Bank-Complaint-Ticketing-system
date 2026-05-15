@@ -1,0 +1,90 @@
+﻿/* Success Page Styling */
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.success-card {
+    background: white;
+    padding: 50px;
+    border-radius: 19px; /* Matching your brand radius */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #b31d1d; /* Brand Red */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 25px;
+}
+
+.success-card h1 {
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+.ticket-info {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 25px 0;
+    border: 1px dashed #ccc;
+}
+
+.next-steps {
+    text-align: left;
+    margin-bottom: 35px;
+}
+
+    .next-steps h3 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .next-steps ul {
+        list-style: none;
+    }
+
+    .next-steps li {
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 0.95rem;
+    }
+
+    .next-steps i {
+        color: #b31d1d;
+        margin-right: 10px;
+    }
+
+.btn-main {
+    background: #b31d1d;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px;
+}
+
+.btn-secondary {
+    background: #eee;
+    color: #333;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px;
+}

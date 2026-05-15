@@ -1,0 +1,56 @@
+﻿@{
+    Layout = null;
+}
+@model Ticketing_system.Models.DTOs.LoginDto
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdeTeniola - Banking Portal</title>
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true">
+
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <div class="content-container">
+
+            <div class="branding-side">
+                <div class="brand-content">
+                <img src="../images/logo.png" alt="AdeTenny Logo" class="brand-logo">
+                <h1 class="brand-name">AdeTenny</h1>
+                    <div class="auth-buttons">
+                        <a class="btn-red" asp-controller="Account" asp-action="Register">Sign Up</a>
+                        <button class="btn-outline">Reset Password</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-card">                
+                <form class="login-form" method="post" asp-controller="Account" asp-action="Login">
+                    <h2 class="form-title">Log in</h2>
+              
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" name="Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" name="Password" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">LOGIN</button>
+                </form>
+
+                @if (ViewBag.Error != null)
+                {
+                    <p style="color:red">@ViewBag.Error</p>
+                }
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

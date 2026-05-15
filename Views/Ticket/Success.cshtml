@@ -1,0 +1,44 @@
+﻿@model Ticket
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tickets</title>
+    <link rel="stylesheet" href="~/css/success.css" asp-append-version="true">
+
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-card">
+            <div class="icon-circle">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1>Submission Successful!</h1>
+            <p>Thank you for reaching out. Your complaint has been recorded and assigned to our support team.</p>
+
+            <div class="ticket-info">
+                <span>Ticket Reference:</span>
+                <strong>@Model.TicketCode</strong>
+            </div>
+
+            <div class="next-steps">
+                <h3>What happens next?</h3>
+                <ul>
+                    <li><i class="fas fa-envelope-open-text"></i> You will receive a confirmation email shortly.</li>
+                    <li><i class="fas fa-clock"></i> Our typical response time is within 24 working hours.</li>
+                    <li><i class="fas fa-search"></i> You can track the status in the "Tickets" tab.</li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                @* <a href="/Tickets/Index" class="btn-main"></a> *@
+                <a asp-controller="Ticket" asp-action="Index" class="btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

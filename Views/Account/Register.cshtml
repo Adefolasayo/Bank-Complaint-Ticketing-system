@@ -1,0 +1,72 @@
+﻿
+@{
+    Layout = null;
+}
+@model Ticketing_system.Models.DTOs.RegisterDto
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdeTeniola - Banking Portal</title>
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true">
+
+</head>
+
+<body>
+    <div class="main-wrapper">
+        <div class="content-container">
+
+            <div class="branding-side">
+                <div class="brand-content">
+                    <img src="../images/logo.png" alt="AdeTenny Logo" class="brand-logo">
+                    <h1 class="brand-name">AdeTenny</h1>
+                    <div class="auth-buttons">
+                        <a class="btn-red" asp-controller="Account" asp-action="Login">Sign In</a>
+                        <button class="btn-outline">Reset Password</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup-card">
+                <form class="signup-form" method="post" asp-controller="Account" asp-action="Register">
+                    <h2 class="form-title">Sign Up</h2>
+
+                    <div class="form-group">
+                        <input type="text" placeholder="FullName" name="FullName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" name="Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <select asp-for="DepartmentId" asp-items="@Model.AvailableDepartments" class="form-control">
+                            <option value="">-- Select your Department --</option>
+                        </select>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" name="Password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" placeholder="Confirm Password" name="ConfirmPassword" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">SIGN UP</button>
+                </form>
+
+                @if (ViewBag.Error != null)
+                {
+                    <p style="color:red">@ViewBag.Error</p>
+                }
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

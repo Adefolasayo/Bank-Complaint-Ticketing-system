@@ -1,0 +1,51 @@
+﻿@model Ticket
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+  
+
+<h2>Manage Ticket</h2>
+
+<p><strong>Ticket:</strong> @Model.TicketCode</p>
+<p><strong>Customer:</strong> @Model.Customer.FullName</p>
+<p><strong>Category:</strong> @Model.Category</p>
+<p><strong>Description:</strong> @Model.Description</p>
+<p><strong>Status:</strong> @Model.Status</p>
+
+<hr />
+
+<!-- Assign Department -->
+<form method="post" asp-action="UpdateStatus">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <label>Assign Department</label>
+    <select name="departmentId">
+        @foreach (var dept in ViewBag.Departments)
+        {
+            <option value="@dept.Id">@dept.Name</option>
+        }
+    </select>
+
+    <br /><br />
+    <button type="submit">Assign & Start Progress</button>
+</form>
+
+<br />
+
+<!-- Resolve -->
+<form method="post" asp-action="Resolve">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Mark as Resolved</button>
+</form>
+
+<br />
+
+<!-- Close -->
+<form method="post" asp-action="Close">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Close Ticket</button>
+</form>
+    

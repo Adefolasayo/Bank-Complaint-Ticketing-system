@@ -1,0 +1,119 @@
+﻿
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Pushes the left and right sides to opposite ends */
+    align-items: center; /* Vertically centers the items */
+    padding: 1rem 2rem;
+    background-color: #b31d1d; /* Brand Red */
+    color: #ffffff;
+    width: 100%;
+}
+
+.navbar-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-message {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #fff;
+}
+
+.user-greeting {
+    font-size: 0.8rem;
+    color: #fff; /* Brand Red */
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Creates space between the right-side elements */
+}
+
+.icon-button {
+    background: #fff;
+    color: #b31d1d; /* Brand Red */
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background: #f2f2f2;
+    margin-right: 5px;
+}
+
+    .tab-button.active {
+        background: #b31d1d;
+        color: white;
+    }
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th {
+    background: #eee; 
+    color: black;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+tr:hover {
+    background-color: #ddd;
+}

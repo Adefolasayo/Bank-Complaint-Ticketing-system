@@ -1,0 +1,148 @@
+﻿/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Prevents accidental horizontal scrolling */
+}
+
+body {
+    background: url('../images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+}
+
+/* Left Branding Side */
+.branding-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo-wrapper {
+    text-align: center;
+    color: white;
+}
+
+.brand-logo {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.brand-name {
+    font-family: 'Brush Script MT', cursive; /* To mimic the script font in your design */
+    font-size: 3.5rem;
+    font-weight: normal;
+}
+
+/* Right Form Side */
+.form-section {
+    flex: 0.6;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Dark semi-transparent overlay */
+    backdrop-filter: blur(10px); /* Glass effect */
+    border-radius: 19px, 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-right:-15px;
+}
+
+.form-title {
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.complaint-form {
+    width: 80%;
+    max-width: 500px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.half {
+    flex: 1;
+}
+
+/* Input Styles */
+input, select, textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.7); /* Light grey transparent fill */
+    border: 2px solid #b31d1d; /* Brand Red */
+    border-radius: 12px;
+    color: #333;
+    font-size: 1rem;
+    outline: none;
+}
+
+    input::placeholder, textarea::placeholder {
+        color: #444;
+    }
+
+textarea {
+    resize: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #b31d1d; /* Brand Red */
+    color: white;
+    border: 2px solid #000;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+    .submit-btn:hover {
+        background-color: #8a1515;
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        overflow-y: scroll;
+    }
+
+    .form-section {
+        width: 100%;
+        overflow-y: scroll;
+    }
+}
