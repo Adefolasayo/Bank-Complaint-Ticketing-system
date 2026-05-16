@@ -1,4 +1,6 @@
-﻿namespace Ticketing_system.Models
+﻿using Ticketing_system.Models.Enums;
+
+namespace Ticketing_system.Models
 {
     public class TicketHistory
     {
@@ -10,9 +12,9 @@
         public int ChangedByUserId { get; set; }
         public User ChangedByUser { get; set; }
 
-        public string OldStatus { get; set; } = "Open";
+        public TicketStatus? OldStatus { get; set; }
 
-        public string NewStatus { get; set; } = "Assigned";
+        public TicketStatus NewStatus { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

@@ -1,6 +1,7 @@
 ﻿@model List<Ticket>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var fullName = Context.Session.GetString("FullName");
     ViewData["Active"] = "Staff Dashboard";
     var availableTickets = ViewBag.AvailableTickets as List<Ticket>;
     var myTickets = ViewBag.MyTickets as List<Ticket>;
@@ -9,173 +10,204 @@
     var closedTickets = ViewBag.ClosedTickets as List<Ticket>;
 }
 
+@{
+    var hour = DateTime.Now.Hour;
+    var greeting = "";
+
+    if (hour < 12)
+    {
+        greeting = "Good morning";
+    }
+    else if (hour < 18)
+    {
+        greeting = "Good afternoon";
+    }
+    else
+    {
+        greeting = "Good evening";
+    }
+}
+
 
 <link rel="stylesheet" href="~/css/StaffDashboard.css" asp-append-version="true" />
 
-<h2>Staff Dashboard</h2>
+<nav class="navbar">
 
-<div class="tabs">
-    <button class="tab-button active" onclick="openTab('available')">Available</button>
-    <button class="tab-button" onclick="openTab('myTickets')">My TIckets</button>
-    <button class="tab-button" onclick="openTab('resolvedTickets')">Resolved</button>
-    <button class="tab-button" onclick="openTab('closedTickets')">Closed</button>
+    <h2>Staff Dashboard</h2>
+     <div class="navbar-left">
+
+        <div class="welcome-section">
+            <span class="welcome-message">@greeting</span>
+            <span class="user-greeting"> Hi, @fullName. Welcome Back.</span>
+        </div>
+    </div>
+</nav>
+
+
+<div class="bg">
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab('available')">Available</button>
+        <button class="tab-button" onclick="openTab('myTickets')">My TIckets</button>
+        <button class="tab-button" onclick="openTab('resolvedTickets')">Resolved</button>
+        <button class="tab-button" onclick="openTab('closedTickets')">Closed</button>
     
-</div>
+    </div>
 
 
-<div id="available" class="tab-content active">
+    <div id="available" class="tab-content active">
 
-    <h3>Available Tickets (Unclaimed)</h3>
+        <h3>Available Tickets (Unclaimed)</h3>
 
-    @if (availableTickets != null && availableTickets.Any())
-    {
-        <table border="1" width="100%">
-            <tr>
-                <th>Ticket Code</th>
-                <th>Customer</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-
-            @foreach (var ticket in availableTickets)
-            {
+        @if (availableTickets != null && availableTickets.Any())
+        {
+            <table border="1" width="100%">
                 <tr>
-                    <td>@ticket.TicketCode</td>
-                    <td>@ticket.Customer.FullName</td>
-                    <td>@ticket.Category</td>
-                    <td>@ticket.CreatedAt</td>
-                    <td>
-                        <form method="post" asp-action="TakeTicket">
-                            <input type="hidden" name="id" value="@ticket.Id" />
-                            <button type="submit">Take Ticket</button>
-                        </form>
-                    </td>
+                    <th>Ticket Code</th>
+                    <th>Customer</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </table>
-    }
-    else
-    {
-        <p>No available tickets.</p>
-    }
 
+                @foreach (var ticket in availableTickets)
+                {
+                    <tr>
+                        <td>@ticket.TicketCode</td>
+                        <td>@ticket.Customer.FullName</td>
+                        <td>@ticket.Category</td>
+                        <td>@ticket.CreatedAt</td>
+                        <td>
+                            <form method="post" asp-action="TakeTicket">
+                                <input type="hidden" name="id" value="@ticket.Id" />
+                                <button type="submit">Take Ticket</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>No available tickets.</p>
+        }
+
+        <hr />
+    </div>
+
+    <!-- ===================== -->
+    <!-- MY TICKETS -->
+    <!-- ===================== -->
+    <div id="myTickets" class="tab-content">
+
+
+        <h3>My Tickets</h3>
+
+        @if (myTickets != null && myTickets.Any())
+        {
+            <table border="1" width="100%">
+                <tr>
+                    <th>Ticket Code</th>
+                    <th>Customer</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+                @foreach (var ticket in myTickets)
+                {
+                    <tr>
+                        <td>@ticket.TicketCode</td>
+                        <td>@ticket.Customer.FullName</td>
+                        <td>@ticket.Category</td>
+                        <td>@ticket.Status</td>
+                        <td>
+                            <form method="post" asp-action="Resolve">
+                                <input type="hidden" name="id" value="@ticket.Id" />
+                                <button type="submit">Resolve</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>You have no assigned tickets.</p>
+        }
+
+    </div>
     <hr />
-</div>
 
-<!-- ===================== -->
-<!-- MY TICKETS -->
-<!-- ===================== -->
-<div id="myTickets" class="tab-content">
+    <div id="resolvedTickets" class="tab-content active">
+         <h3>Resolved (Waiting to Close)</h3>
 
+    @if (resolvedTickets != null && resolvedTickets.Any())
+        {
 
-    <h3>My Tickets</h3>
+            <table border="1" width="100%">
 
-    @if (myTickets != null && myTickets.Any())
-    {
-        <table border="1" width="100%">
-            <tr>
-                <th>Ticket Code</th>
-                <th>Customer</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-
-            @foreach (var ticket in myTickets)
-            {
                 <tr>
-                    <td>@ticket.TicketCode</td>
-                    <td>@ticket.Customer.FullName</td>
-                    <td>@ticket.Category</td>
-                    <td>@ticket.Status</td>
-                    <td>
-                        <form method="post" asp-action="Resolve">
-                            <input type="hidden" name="id" value="@ticket.Id" />
-                            <button type="submit">Resolve</button>
-                        </form>
-                    </td>
+
+                    <th>TicketCode</th>
+                    <th>Category</th>
+                    <th>Action</th>
+
                 </tr>
-            }
-        </table>
-    }
-    else
-    {
-        <p>You have no assigned tickets.</p>
-    }
 
-</div>
-<hr />
+                @foreach (var ticket in ViewBag.ResolvedTickets)
+                {
+                    <tr>
+                        <td>@ticket.TicketCode</td>
+                        <td>@ticket.Category</td>
+                        <td>
+                            <form method="post" asp-action="Close">
+                                <input type="hidden" name="id" value="@ticket.Id" />
+                                <button type="submit">Close</button>
+                            </form>
+                        </td>
+                    </tr>
+                } 
+            </table>
+           }
+        else
+        {
+        <p>You have no Resolved ticket.</p>
+        }
+    </div>
 
-<div id="resolvedTickets" class="tab-content active">
-     <h3>Resolved (Waiting to Close)</h3>
-
-@if (resolvedTickets != null && resolvedTickets.Any())
-    {
-
+    <div id="closedTickets" class="tab-content active">
+        <h3>Closed Tickets</h3>
+        @if (closedTickets != null && closedTickets.Any())
+        {
         <table border="1" width="100%">
 
             <tr>
 
                 <th>TicketCode</th>
                 <th>Category</th>
-                <th>Action</th>
+            
+                <th>Duration</th>
 
             </tr>
 
-            @foreach (var ticket in ViewBag.ResolvedTickets)
+            @foreach (var ticket in ViewBag.ClosedTickets)
             {
                 <tr>
                     <td>@ticket.TicketCode</td>
                     <td>@ticket.Category</td>
-                    <td>
-                        <form method="post" asp-action="Close">
-                            <input type="hidden" name="id" value="@ticket.Id" />
-                            <button type="submit">Close</button>
-                        </form>
-                    </td>
+
+                        <td>@((ticket.ClosedAt - ticket.CreatedAt)?.TotalMinutes.ToString("0"))</td>
                 </tr>
-            } 
+            }
         </table>
-       }
-    else
-    {
-    <p>You have no Resolved ticket.</p>
-    }
-</div>
-
-<div id="closedTickets" class="tab-content active">
-    <h3>Closed Tickets</h3>
-    @if (closedTickets != null && closedTickets.Any())
-    {
-    <table border="1" width="100%">
-
-        <tr>
-
-            <th>TicketCode</th>
-            <th>Category</th>
-            
-            <th>Duration</th>
-
-        </tr>
-
-        @foreach (var ticket in ViewBag.ClosedTickets)
-        {
-            <tr>
-                <td>@ticket.TicketCode</td>
-                <td>@ticket.Category</td>
-
-                    <td>@((ticket.ClosedAt - ticket.CreatedAt)?.TotalMinutes.ToString("0"))</td>
-            </tr>
         }
-    </table>
-    }
-    else
-    {
-    <p>You have no closed ticket.</p>
-    }
+        else
+        {
+        <p>You have no closed ticket.</p>
+        }
+    </div>
 </div>
-
 
 <!-- JS -->
 <script>

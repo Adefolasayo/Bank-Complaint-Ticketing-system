@@ -1,1 +1,102 @@
-﻿ViewData["Active"] = "Analytics";
+﻿@using System.Text.Json
+@{
+    ViewData["Title"] = "Analytics Dashboard";
+    ViewData["Active"] = "Analytics";
+
+    var categoryLabels = JsonSerializer.Serialize(ViewBag.CategoryLabels);
+    var categoryCounts = JsonSerializer.Serialize(ViewBag.CategoryCounts);
+
+    var monthLabels = JsonSerializer.Serialize(ViewBag.MonthLabels);
+    var monthCounts = JsonSerializer.Serialize(ViewBag.MonthCounts);
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="~/css/StaffDashboard.css" asp-append-version="true" />
+<script>
+    window.analyticsData = {
+        categoryLabels: @Html.Raw(categoryLabels),
+        categoryCounts: @Html.Raw(categoryCounts),
+        monthLabels: @Html.Raw(monthLabels),
+        monthCounts: @Html.Raw(monthCounts)
+    };
+</script>
+
+<script src="~/js/analytics.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="analytics-container">
+
+    <p>Complaint Ticket Dashboard </p>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+
+        <div class="kpi-card">
+            <h3>Total Complaints</h3>
+            <h2>@ViewBag.TotalComplaints</h2>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Average Response Time</h3>
+            <h2>@ViewBag.AvgResponseHours Hours</h2>
+        </div>
+
+    </div>
+
+    <!-- CHARTS -->
+    <div class="chart-grid">
+
+        <div class="chart-card">
+            <h3>Complaint Distribution</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Complaints Over Time</h3>
+            <canvas id="lineChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="~/js/analytics.js" asp-append-version="true"></script>
+ <script>
+    // =========================
+    // BAR CHART
+    // =========================
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(categoryLabels),
+            datasets: [{
+                label: 'Complaints',
+                data: @Html.Raw(categoryCounts),
+                backgroundColor: 'rgba(179, 29, 29, 0.8)',
+                borderColor: 'rgba(179, 29, 29, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // =========================
+    // LINE CHART
+    // =========================
+    new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(monthLabels),
+            datasets: [{
+                label: 'Complaints',
+                data: @Html.Raw(monthCounts),
+                borderColor: 'rgba(179, 29, 29, 1)',
+                backgroundColor: 'rgba(179, 29, 29, 0.2)',
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: 'rgba(179, 29, 29, 1)'
+                }]
+        }
+    });
+</script> 

@@ -31,6 +31,7 @@ public class TicketController : Controller
         // 🔍 1. Verify Customer Exists
         var customer = await _context.Customers
             .FirstOrDefaultAsync(c => c.AccountNumber == dto.AccountNumber);
+        var userId = HttpContext.Session.GetInt32("UserId");
 
         if (customer == null)
         {
@@ -63,23 +64,11 @@ public class TicketController : Controller
 
         await _context.SaveChangesAsync();
 
-        //        // 🕓 5. Log Ticket History
-        //        var history = new TicketHistory
-        //        {
-        //            TicketId = ticket.Id,
-        //            ChangedByUserId = 1, // ⚠️ Replace with logged-in user later
-        //            OldStatus = null,
-        //            NewStatus = "Open",
-        //            ChangedAt = DateTime.Now
-        //        };
 
-        //        _context.TicketHistories.Add(history);
-        //        await _context.SaveChangesAsync();
+        // 📧 6. (Optional) Email trigger
+        // TODO: Send email here
 
-        //        // 📧 6. (Optional) Email trigger
-        //        // TODO: Send email here
 
-        
 
         return RedirectToAction("Success", new { code = ticket.TicketCode });
 
@@ -152,9 +141,14 @@ public class TicketController : Controller
         IQueryable<Ticket> query = _context.Tickets
             .Include(t => t.Customer)
             .Include(t => t.AssignedToUser)
+            .Include(t => t.Department)
             .Where(t => t.DepartmentId == departmentId)
             .OrderByDescending(t => t.CreatedAt);
 
+        var department = await _context.Departments
+            .FirstOrDefaultAsync(d => d.Id == departmentId);
+
+        ViewBag.DepartmentName = department?.Name;
 
         var tickets = await query.ToListAsync();
 
@@ -186,6 +180,7 @@ public class TicketController : Controller
     [HttpPost]
     public async Task<IActionResult> UpdateStatus(int id, int departmentId)
     {
+        var userId = HttpContext.Session.GetInt32("UserId");
         if (!IsAuthorized())
             return RedirectToAction("Login", "Account");
 
@@ -200,6 +195,15 @@ public class TicketController : Controller
         ticket.DepartmentId = departmentId;
         ticket.Status = TicketStatus.InProgress;
         ticket.UpdatedAt = DateTime.Now;
+
+        _context.TicketsHistory.Add(new TicketHistory
+        {
+            TicketId = ticket.Id,
+            ChangedByUserId = userId.Value,
+            OldStatus = TicketStatus.Open,
+            NewStatus = TicketStatus.InProgress,
+            CreatedAt = DateTime.Now
+        });
 
         await _context.SaveChangesAsync();
 
@@ -303,7 +307,7 @@ public class TicketController : Controller
         }
 
         // Assign ticket to user
-        ticket.AssignedToUserId = userId;
+        ticket.AssignedToUserId = userId.Value;
         ticket.Status = TicketStatus.InProgress;
         ticket.Status = TicketStatus.InProgress;
         ticket.UpdatedAt = DateTime.Now;
@@ -338,6 +342,15 @@ public class TicketController : Controller
         ticket.Status = TicketStatus.Resolved;
         ticket.ResolvedAt = DateTime.Now;
 
+        _context.TicketsHistory.Add(new TicketHistory
+        {
+            TicketId = ticket.Id,
+            ChangedByUserId = userId.Value,
+            OldStatus = TicketStatus.InProgress,
+            NewStatus = TicketStatus.Resolved,
+            CreatedAt = DateTime.Now
+        });
+
         await _context.SaveChangesAsync();
 
         return RedirectToAction("StaffDashboard");
@@ -347,7 +360,7 @@ public class TicketController : Controller
     public async Task<IActionResult> Close(int id)
     {
         var userRole = HttpContext.Session.GetString("UserRole");
-
+        var userId = HttpContext.Session.GetInt32("UserId");
         var ticket = await _context.Tickets.FindAsync(id);
 
         if (ticket == null)
@@ -363,6 +376,15 @@ public class TicketController : Controller
 
         ticket.Status = TicketStatus.Closed;
         ticket.ClosedAt = DateTime.Now;
+
+        _context.TicketsHistory.Add(new TicketHistory
+        {
+            TicketId = ticket.Id,
+            ChangedByUserId = userId.Value,
+            OldStatus = TicketStatus.Resolved,
+            NewStatus = TicketStatus.Closed,
+            CreatedAt = DateTime.Now
+        });
 
         await _context.SaveChangesAsync();
 

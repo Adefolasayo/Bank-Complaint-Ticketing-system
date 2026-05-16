@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Active"] = "Department Tickets";
     var fullName = Context.Session.GetString("FullName");
+    
 }
 
 @{
@@ -31,8 +32,8 @@
     <div class="navbar-left">
 
         <div class="welcome-section">
-            <span class="welcome-message">@greeting</span>
-            <span class="user-greeting"> Hi, @fullName. Welcome Back.</span>
+            <span class="welcome-message">@ViewBag.DepartmentName Department</span>
+            
         </div>
     </div>
 
@@ -43,35 +44,37 @@
         </button>
     </div>
 </nav>
-
-<table border="1" width="100%">
-    <tr>
-        <th>Ticket Code</th>
-        <th>Customer</th>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Status</th>
-        <th>Created</th>
-        <th>Assigned To</th>
-        <th>Duration</th>
-    </tr>
-
-    @foreach (var ticket in Model)
-    {
+<div class="bg">
+    <table border="1" width="100%">
         <tr>
-            <td>@ticket.TicketCode</td>
-            <td>@ticket.Customer?.FullName</td>
-            <td>@ticket.Title</td>
-            <td>@ticket.Category</td>
-            <td>@ticket.Status</td>
-            <td>@ticket.CreatedAt</td>
-            <td>
-                @(ticket.AssignedToUser != null ? ticket.AssignedToUser.FullName : "Unassigned")
-
-            </td>
-            <td>@((ticket.ClosedAt - ticket.CreatedAt)?.TotalMinutes.ToString("0"))</td>
-
-
+            <th>Ticket Code</th>
+            <th>Customer</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Assigned To</th>
+            <th>Duration</th>
         </tr>
-    }
-</table>
+
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.TicketCode</td>
+                <td>@ticket.Customer?.FullName</td>
+                <td>@ticket.Title</td>
+                <td>@ticket.Category</td>
+                <td>@ticket.Status</td>
+                <td>@ticket.CreatedAt</td>
+                <td>
+                    @(ticket.AssignedToUser != null ? ticket.AssignedToUser.FullName : "Unassigned")
+
+                </td>
+                <td>@(ticket.ClosedAt.HasValue? (ticket.ClosedAt.Value - ticket.CreatedAt).TotalMinutes.ToString("0"): "-")</td>
+
+
+            </tr>
+        }
+    </table>
+
+</div>
